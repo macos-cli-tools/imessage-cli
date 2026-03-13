@@ -186,6 +186,46 @@ Single TypeScript file (~2,800 lines), no build step. Uses:
 - kqueue (via `fs.watch`) for real-time message watching
 - OpenAI API for semantic search embeddings (optional)
 
+## Claude Code Integration
+
+This repo includes files for [Claude Code](https://claude.com/claude-code) (Anthropic's CLI tool):
+
+### Automatic (CLAUDE.md)
+
+Clone this repo and work inside it — Claude Code automatically reads `CLAUDE.md` and understands all 44 commands. No configuration needed.
+
+```bash
+git clone https://github.com/macos-cli-tools/imessage-cli.git
+cd imessage-cli
+claude  # Claude Code now knows about the iMessage CLI
+```
+
+### As a Skill (SKILL.md)
+
+To make the iMessage CLI available as a **skill** that Claude Code can invoke from any directory:
+
+1. Copy `skill/SKILL.md` to your Claude Code skills directory:
+   ```bash
+   mkdir -p ~/.claude/skills/iMessage
+   cp skill/SKILL.md ~/.claude/skills/iMessage/SKILL.md
+   cp imessage.ts ~/.claude/skills/iMessage/imessage.ts
+   cp imessage.sh ~/.claude/skills/iMessage/imessage.sh
+   ```
+
+2. Edit `~/.claude/skills/iMessage/SKILL.md` — replace `INSTALL_DIR` with the actual path:
+   ```
+   ~/.claude/skills/iMessage
+   ```
+
+3. Register the skill in your Claude Code settings (`~/.claude/settings.json`):
+   ```json
+   {
+     "skills": ["~/.claude/skills/iMessage/SKILL.md"]
+   }
+   ```
+
+Now Claude Code can send/read/search iMessages from any project directory.
+
 ## Legacy Script
 
 `imessage.sh` is the original bash script (v1.0.0) with basic send/list/read/search/find. Retained for backward compatibility.
