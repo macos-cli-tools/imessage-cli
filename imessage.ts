@@ -309,7 +309,7 @@ async function describeImageWithAI(filepath: string): Promise<string> {
 
 /**
  * Build a map of handle (phone/email) → contact name from macOS AddressBook SQLite.
- * Reads ~/Library/Application Support/AddressBook/Sources/*/AddressBook-v22.abcddb.
+ * Reads ~/Library/Application Support/AddressBook/Sources/{id}/AddressBook-v22.abcddb.
  * Phone numbers are normalized to E.164 format (+1XXXXXXXXXX for US numbers).
  * This is much faster than AppleScript (~100ms vs 30s+ for thousands of contacts).
  * Used by: list, spam-scan, and any command that resolves handles to names.
@@ -2218,7 +2218,6 @@ STEP 5: Verify:
 // IMESSAGE DETECTION, REAL-TIME WATCH & SEMANTIC SEARCH
 // ============================================================
 
-Check if iMessage is available for a handle */
 /**
  * Check whether a handle is registered as iMessage or falls back to SMS.
  * Reads service type from chat.db — does not send any messages.
@@ -2278,7 +2277,6 @@ function cmdCheckIMessage(handle: string) {
   }
 }
 
-Send via SMS service (requires iPhone Continuity / Text Message Forwarding) */
 /** Send SMS (green bubble) via AppleScript. Requires iPhone Text Message Forwarding enabled. */
 async function cmdSendSMS(to: string, msg: string) {
   const result = await osa(`tell application "Messages"
@@ -2298,7 +2296,6 @@ end tell`).catch((e) => `ERROR: ${e.message}`);
   }
 }
 
-Watch for new messages in real time */
 /**
  * Real-time message stream using kqueue file watching on chat.db.
  * Monitors chat.db, chat.db-wal, and chat.db-shm for changes.
@@ -2403,7 +2400,6 @@ async function cmdWatch(handle?: string, opts: { timeout?: number } = {}) {
   await new Promise(() => {});
 }
 
-Batch embed texts via OpenAI text-embedding-3-small */
 /**
  * Generate embeddings for a batch of texts using OpenAI's text-embedding-3-small model.
  * Used by build-index and semantic-search for vector similarity.
@@ -2433,7 +2429,6 @@ async function batchEmbed(texts: string[]): Promise<number[][]> {
   return sorted.map((d: any) => d.embedding);
 }
 
-Cosine similarity between Float32Array and number[] */
 /** Compute cosine similarity between two vectors for semantic ranking */
 function cosineSim(a: Float32Array, b: number[]): number {
   let dot = 0, normA = 0, normB = 0;
@@ -2446,7 +2441,6 @@ function cosineSim(a: Float32Array, b: number[]): number {
   return denom === 0 ? 0 : dot / denom;
 }
 
-Reciprocal Rank Fusion (RRF) merge */
 /** Reciprocal Rank Fusion: merge keyword and semantic search results into a unified ranking */
 function rrfMerge(
   ftsResults: { rowid: number; text: string }[],
@@ -2476,7 +2470,6 @@ function rrfMerge(
 
 const SEARCH_INDEX_PATH = join(STATE_DIR, "search_index.db");
 
-Ensure search index schema exists */
 /** Create the embedding index database schema if it doesn't exist */
 function ensureIndexSchema(indexDb: Database) {
   indexDb.exec(`
@@ -2591,7 +2584,6 @@ async function cmdBuildIndex(incremental = true) {
   indexDb.close();
 }
 
-Semantic search command */
 /**
  * Semantic/hybrid search combining vector similarity with keyword matching.
  * Modes: "hybrid" (default, RRF merge), "semantic" (vector only), "keyword" (LIKE only).

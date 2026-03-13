@@ -39,6 +39,78 @@ imsg search "dinner plans" 20
 imsg spam-scan
 ```
 
+## Example Output
+
+```
+$ imsg stats
+iMessage Database Statistics
+══════════════════════════════════════════════════
+  Total messages : 12,847
+  Sent           : 3,291
+  Received       : 9,556
+  Active chats   : 203
+  Date range     : Jan 15, 2024 at 09:22 AM → Mar 12, 2026 at 08:28 PM
+
+  Top 10 Contacts:
+    Alice Johnson (+15551234567)              1,842 msgs
+    Bob Smith (+15559876543)                    956 msgs
+    Work Group Chat                             731 msgs
+    Mom (+15551112222)                          589 msgs
+    ...
+```
+
+```
+$ imsg list 5
+[group(8)] Family Group
+[group(11)] Work Team
+[1:1] Alice (+15551234567)
+[1:1] Mom (+15551112222)
+[1:1] +15559999999
+```
+
+```
+$ imsg unread
+Unread: 7 message(s) across 4 conversation(s)
+
+  ●  3  Work Team                               Mar 12, 2026 at 08:28 PM
+  ●  2  Alice (+15551234567)                     Mar 12, 2026 at 06:15 PM
+  ●  1  +15559999999                             Mar 11, 2026 at 09:45 PM
+  ●  1  Mom (+15551112222)                       Mar 10, 2026 at 02:30 PM
+```
+
+```
+$ imsg thread-read +15551234567 3
+────────────────────────────
+Alice · Mar 12, 2026 at 6:15 PM
+  Are we still on for dinner tonight?
+
+me · Mar 12, 2026 at 6:18 PM
+  Yes! 7pm at the usual place?
+
+Alice · Mar 12, 2026 at 6:19 PM
+  Perfect, see you there! 🍕
+```
+
+```
+$ imsg search "dinner" 3 --since 7d
+2026-03-12 18:15  Alice (+15551234567)  Are we still on for dinner tonight?
+2026-03-10 19:30  Mom (+15551112222)    Dinner was wonderful, thank you!
+2026-03-08 12:00  Bob (+15559876543)    Want to grab dinner this week?
+```
+
+## Installation
+
+```bash
+# Clone and install
+git clone https://github.com/macos-cli-tools/imessage-cli.git
+cd imessage-cli
+bash install.sh
+```
+
+The installer checks prerequisites (Bun, macOS, Full Disk Access), copies files to `~/.imessage-cli/`, and optionally creates an `imsg` shell alias.
+
+Or manually: just run `bun imessage.ts <command>` from wherever you cloned the repo.
+
 ## Commands (44 total)
 
 ### Send

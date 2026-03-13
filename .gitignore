@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# State directory (created at runtime)
+.imessage-cli/
+
+# Semantic search index
+search_index.db
+
+# Environment files
+.env
+.env.local
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Node (not used, but just in case)
+node_modules/
